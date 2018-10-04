@@ -58,7 +58,34 @@
 </body>
 
 <script>
-
+    const mousePosition = { x: 0, y: 0 };
+    let drawId;
+    const getRandomNumber = (min, max) => Math.round(Math.random() * (max - min + 1)) + min;
+    window.addEventListener('mousemove', (event) => {
+        // console.log(event.clientX, event.clientY);
+        mousePosition.x = event.clientX;
+        mousePosition.y = event.clientY;
+    });
+    function draw() {
+        return setInterval(() => {
+            const color = `background:rgb(${getRandomNumber(0, 255)},${getRandomNumber(0, 255)}, ${getRandomNumber(0, 255)});`;
+            const ballSize = getRandomNumber(100, 300);
+            const size = `height:${ballSize}px; width:${ballSize}px;`;
+            const left = `left:${getRandomNumber(mousePosition.x - ballSize, mousePosition.x)}px;`;
+            const top = `top:${getRandomNumber(mousePosition.y - ballSize, mousePosition.y)}px; `;
+            const style = `${left}${top}${color}${size}`;
+            const newBall = document.createElement('div');
+            newBall.classList.add('ball');
+            newBall.style = style;
+            const wrap = document.getElementById('wrap');
+            wrap.appendChild(newBall);
+            newBall.addEventListener('animationend', function() {
+                this.remove();
+            })
+        }, 100);
+    }
+    window.addEventListener('mouseover', () => drawId = draw());
+    window.addEventListener('mouseout', () => clearInterval(drawId));
 </script>
 
 </html>
