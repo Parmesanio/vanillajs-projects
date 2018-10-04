@@ -76,7 +76,7 @@
     <div class="container">
         <h1>Try Typing...</h1>
         <div class="input-container">
-            <input type="text">
+            <input id="input" type="text">
             <ul id="list"></ul>
         </div>
     </div>
@@ -84,6 +84,23 @@
 </body>
 
 <script>
+    let people = [];
+    const list = document.getElementById("list");
+    const input = document.getElementById("input");
+    fetch('https://swapi.co/api/people')
+        .then(res => res.json())
+        .then(res => {
+            people = res.results
+            render(people)
+        });
+        function render(arr) {
+            const html = arr.map(e => `<li>${e.name}</li>`).join("")
+            list.innerHTML = html
+        }
+        input.addEventListener('keyup', (event) => {
+            const filteredPeople = people.filter(person => person.name.includes(event.target.value))
+            render(filteredPeople)
+        })
 </script>
 
 </html>
